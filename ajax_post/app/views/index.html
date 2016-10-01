@@ -6,11 +6,8 @@
       $(document).ready(function(){
 
         $('form').submit(function(){
-          console.log(this);
           $.post('/post/create', $(this).serialize(), function(res){
-            console.log(res);
-            console.log('amin');
-            $('#posts').html(res);
+            $('#posts').append(res);
           })
           return false;
         })

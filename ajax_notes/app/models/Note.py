@@ -9,9 +9,9 @@
 """
 from system.core.model import Model
 
-class Welcome(Model):
+class Note(Model):
     def __init__(self):
-        super(Welcome, self).__init__()
+        super(Note, self).__init__()
     """
     Below is an example of a model method that queries the database for all users in a fictitious application
     
@@ -38,16 +38,38 @@ class Welcome(Model):
         return self.db.query_db(query, data)
 
     """
-
-    def get_all_posts(self):
-        query = "SELECT * FROM posts"
-        return self.db.query_db(query)
-
-    def create(self, post):
-        query = "INSERT INTO posts (post, created_at) VAlues (:post, NOW())" 
-        data = {'post': post['post']}
+    def create(self, note):
+        query = "INSERT INTO notes (title, description, created_at) VALUES (:title, :description, NOW())"
+        data = {'title': note['title'], 'description': note['description']}
         return self.db.query_db(query, data)
 
-    def get_last_post(self):
-        query = "SELECT * FROM posts ORDER BY created_at DESC LIMIT 1"
+    def get_note_by_id(self, id):
+        query = "SELECT * FROM notes WHERE id = :id"
+        data = {'id': id}
+        return self.db.query_db(query, data)
+
+    def update(self, note):
+        query = "UPDATE notes SET description = :description, updated_at = NOW() WHERE id = :id"
+        data = {'description': note['description'], 'id': note['id']}
+        return self.db.query_db(query, data)
+
+    def get_all_notes(self):
+        query = "SELECT * FROM notes"
         return self.db.query_db(query)
+
+    def delete(self, id):
+        query = "DELETE FROM notes WHERE id = :id"
+        data = {'id': id}
+        return self.db.query_db(query, data)
+
+
+
+
+
+
+
+
+
+
+
+

@@ -8,14 +8,14 @@
 """
 from system.core.controller import *
 
-class Welcomes(Controller):
+class Notes(Controller):
     def __init__(self, action):
-        super(Welcomes, self).__init__(action)
+        super(Notes, self).__init__(action)
         """
             This is an example of loading a model.
             Every controller has access to the load_model method.
         """
-        self.load_model('Welcome')
+        self.load_model('Note')
         self.db = self._app.db
 
         """
@@ -35,19 +35,29 @@ class Welcomes(Controller):
         # to pass information on to a view it's the same as it was with Flask
         
         # return self.load_view('index.html', messages=messages, user=user)
-
         """
-        posts = self.models['Welcome'].get_all_posts()
-        return self.load_view('index.html', posts = posts)
+        notes = self.models['Note'].get_all_notes()
+        return self.load_view('index.html', notes = notes)
 
     def create(self):
-        result = {'post': request.form['post']}
-        self.models['Welcome'].create(result)
+        note = {'title': request.form['title'], 'description': request.form['description']}
+        id = self.models['Note'].create(note)
+        
+        note = self.models['Note'].get_note_by_id(id)
+        return self.load_view('partials/notes.html', note = note[0])
 
-        post = self.models['Welcome'].get_last_post()
+    def update(self):
+        note = {'id': request.form['id'], 'description': request.form['description']}
+        self.models['Note'].update(note)
 
-        return self.load_view('partials/posts.html', post = post[0])
+        note = self.models['Note'].get_note_by_id(request.form['id'])
+        return self.load_view('partials/update.html', note = note[0])
 
-    # def index_json(self):
-    #     quotes = self.models['Welcome'].get_all_posts()
-    #     return jsonify(quotes = quotes)
+    def delete(self):
+        id = request.form['id']
+
+        note = self.models['Note'].get_note_by_id(id)
+        return self.load_view('partials/notes.html', note = note[0])
+
+
+

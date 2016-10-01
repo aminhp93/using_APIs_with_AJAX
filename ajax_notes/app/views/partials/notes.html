@@ -1,0 +1,10 @@
+<form action="/update" method="post">
+	<input class="{{ note['id'] }}" type="text" name="title" value="{{ note['title'] }}">
+	<input class="description" id="{{ note['id'] }}" type="text" name="description" value="{{ note['description'] }}">
+    <input type="hidden" name="id" value="{{note['id']}}">
+	<input class="hidden" type="submit" value="update">
+</form>
+<form id="delete" action="/delete" method="post">
+	<input type="hidden" name="id" value="{{note['id']}}">
+	<input type="submit" value="delete">
+</form>
